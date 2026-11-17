@@ -20,12 +20,10 @@ jobs:
           arduino-cli core install esp8266:esp8266
           arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library" "FluxGarage RoboEyes"
 
+      - name: Compile
+        run: |
+          mkdir -p sketch/CosmoEyes_Spidey
+          cp "$(find . -name '*.ino' | head -n 1)" sketch/CosmoEyes_Spidey/CosmoEyes_Spidey.ino
+          arduino-cli compile --fqbn esp8266:esp8266:nodemcuv2 sketch/CosmoEyes_Spidey --output-dir build
       # NodeMCU = esp8266:esp8266:nodemcuv2
       # Wemos D1 Mini = esp8266:esp8266:d1_mini  (change the line below if you use it)
-      - name: Compile
-        run: arduino-cli compile --fqbn esp8266:esp8266:nodemcuv2 CosmoEyes_Spidey --output-dir build
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: firmware
-          path: build/*.ino.bin
